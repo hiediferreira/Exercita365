@@ -1,17 +1,21 @@
-# Template para criação de uma API
-### Criação de uma API com nodeJS e Sequelize
+# EXERCITA365
+### Exercita365 foi desenvolvido como projeto final do Módulo II do curso de Desenvolvimento Web do Floripa Mais Tech! Nele, colocamos em prática os conhecimentos adquiridos sobre back-end.
 
-## Rodar o repositório:
 
-### Na primeira vez é necessário instalar as dependencias:
-1. `npm install`
-2. `cp .env_example .env` 
-`copiar e renomear o arquivo .env_exemple para .env`
-
-### Para rodar o repositório em ambiente local
-1. `npm run start:dev`
+## Rodando o repositório:
+* Clone o repositório para sua máquina: `git clone https://github.com/hiediferreira/Exercita365.git`
+* Na primeira vez, será necessário instalar as dependências: `npm install`
+* Copie o arquivo .env_exemple (arquivo onde informa quais são as variáveis de ambiente do projeto), renomeie para .env e coloque suas credenciais nele. 
+* Para rodar o repositório em ambiente local execute: `npm run start:dev`
 
 ## Trabalhando com migrations:
+* Para rodar as migrations execute: `sequelize db:migrate` ou `npx sequelize db:migrate`
+
+
+
+
+
+
 
 ### Criar uma migration
 1. Opção nº 1: `sequelize migration:generate --name nome_da_migracao`
@@ -29,11 +33,7 @@
 2. Opção nº 2: `npx sequelize-cli db:migrate:undo:all`
 
 
-## Trabalhando com Seeders
 
-### Executar o seeders para gerar valores iniciais no banco de dados:
-1. Opção nº 1: `sequelize db:seed:all`
-2. Opção nº 2: `npx sequelize db:seed:all`
 
 ## Documentação do Sequelize:
 https://sequelize.org/docs/v6/core-concepts/model-basics/
