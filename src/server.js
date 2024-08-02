@@ -14,10 +14,8 @@ class Server {
     }
 
     async middlewares(server){
-        console.log('Executando os middlewares')
-        server.use(cors()) //Qdo estiver em produção, habilita os CORS
+        server.use(cors())
         server.use(express.json()) //habilita a API a trabalhar com json
-        console.log('Middlewares executado')
     } //middlewares são funções que serão executadas entre rota e controllers
 
     async database(){
@@ -33,8 +31,6 @@ class Server {
         server.listen(APP_PORT, () => {
             console.log(`Servidor rodando na porta ${APP_PORT}`)
         }) 
-        //escute a porta 3000 e se vc conseguir se conectar nessa porta,
-        //então execute uma função(console.log neste caso)
     }
 }
 
