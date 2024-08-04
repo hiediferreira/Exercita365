@@ -27,8 +27,16 @@ O banco de dados utilizado foi PostgreSQL. Abaixo, o esquemático do banco de da
 * bcryptjs;
 * axios;
 
+### Swagger
+Foi utilizada a ferramenta Swagger para documentação e teste das rotas. Swagger é uma ferramenta gratuita bastante útil na organização e documentação de APIs.
+
+![swagger](https://github.com/user-attachments/assets/bc78412d-e860-44a1-92cc-d878e557304e)
+
 ### Documentação do Sequelize:
 https://sequelize.org/docs/v6/core-concepts/model-basics/
+
+### Sugestões e melhorias
+A AwesomeAPI foi utilizada para consulta do CEP. Porém, alguns ceps não são cadastrados na plataforma. Seria interessante aprimorar as tratativas de erro no caso de falha na busca pelo cep.
 
 ### Desenvolvimento
 Esse projeto simula uma API REST do lado back-end e foi desenvolvido por Hiédi Ferreira como projeto final do Módulo II do curso de Desenvolvimento Web do projeto *Floripa Mais Tech* em parceria com SENAI/SC.
