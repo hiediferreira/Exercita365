@@ -30,6 +30,14 @@ class LocalController {
 
             //Se passou por todas as validações
             const resultado = await getDadosCep(dados.cep) //pega os dados do cep informado pelo usuário
+
+            if (resultado === undefined){
+                //Alguns ceps não são cadastrados na plataforma, então, uma verificação é necessária caso o cep informado não seja cadastrado
+                //Ele retorna undefined quando não encontra o cep
+                return response.status(400).json({mensagem: 'Cep inválido ou não encontrado'})
+            } 
+
+            //Se encontrou o cep
             console.log(`Cidade: ${resultado.city}, Estado: ${resultado.state}, Latitude: ${resultado.lat}, Longitude: ${resultado.lng}`)
 
             const linkGoogle = `https://www.google.com/maps?q=${resultado.lat},${resultado.lng}`
@@ -150,6 +158,12 @@ class LocalController {
 
             if(dados.cep){ //se foi informado um cep, atualiza o link 
                 const resultado = await getDadosCep(dados.cep) //pega os dados do novo cep informado pelo usuário
+
+                if (resultado === undefined){
+                    //Ele retorna undefined quando não encontra o cep
+                    return response.status(400).json({mensagem: 'Cep inválido ou não encontrado'})
+                }
+
                 console.log(`Cidade: ${resultado.city}, Estado: ${resultado.state}, Latitude: ${resultado.lat}, Longitude: ${resultado.lng}`)
 
                 const linkGoogle = `https://www.google.com/maps?q=${resultado.lat},${resultado.lng}`
