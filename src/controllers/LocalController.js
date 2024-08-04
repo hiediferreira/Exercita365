@@ -66,7 +66,7 @@ class LocalController {
                 include: [
                     {
                         model: Usuario,
-                        attributes: ['nome']
+                        attributes: ['nome', 'id']
                     }
                 ]
             })
@@ -79,56 +79,100 @@ class LocalController {
         }
     }
 
-    async listar(request, response){
+    async listarEspecifico(request, response) {
         try {
-            const dados = request.query
-            
-            if(dados.nome){
-                const usuario = await Usuario.findAll({
-                    where: {
-                        nome: `${dados.nome}`
-                    }                    
-                })
-                response.json(usuario)
-            } else {
-                const usuarios = await Usuario.findAll({
-                    attributes: ['id', 'nome', 'email', 'cep']
-                })
-                response.json(usuarios)
+            const {userId} = request //esse id está contido no token do usuário que está autenticado
+            const id = request.params.id
+
+            const local = await Local.findAll({
+                where: {
+                    usuarioId: userId,
+                    id: id
+                }
+            })
+
+            if(local.length === 0) {
+                return response.status(404).json({mensagem: 'Índice não encontrado'})
             }
+
+            response.json(local)
 
         } catch(error) {
             console.log(error)
-            response.status(500).json({mensagem: 'Erro ao listar usuário(s)!'})
-        }
-    }
-
-
-
-
-
-
-    async listarEspecifico(request, response) {
-        try {
-
-        } catch(error) {
-
+            response.status(500).json({mensagem: 'Erro ao listar os locais!'})
         }
     }
 
     async deletarLocal(request, response) {
         try {
+            const {userId} = request //esse id está contido no token do usuário que está autenticado
+            const id = request.params.id
 
+            const local = await Local.findOne({
+                where: {
+                    usuarioId: userId,
+                    id: id
+                }
+            })
+
+            if(local.length === 0) {
+                return response.status(404).json({mensagem: 'Índice não encontrado'})
+            }
+
+            await local.destroy()
+            response.status(204).json()
         } catch(error) {
-
+            console.log(error)
+            response.status(500).json({mensagem: 'Erro ao deletar local!'})
         }
     }
 
     async atualizarLocal(request, response) {
         try {
+            const {userId} = request //esse id está contido no token do usuário que está autenticado
+            const id = request.params.id
+            const dados = request.body
+
+            const local = await Local.findOne({
+                where: {
+                    usuarioId: userId,
+                    id: id
+                }
+            })
+
+            if(local.length === 0) {
+                return response.status(404).json({mensagem: 'Índice não encontrado'})
+            }
+
+            //Pega o que já existe e substitui pelo novo dado que vai vir pelo body
+
+            local.cepLocal = dados.cep
+
+            if(dados.cep){ //se foi informado um cep, atualiza o link 
+                const resultado = await getDadosCep(dados.cep) //pega os dados do novo cep informado pelo usuário
+                console.log(`Cidade: ${resultado.city}, Estado: ${resultado.state}, Latitude: ${resultado.lat}, Longitude: ${resultado.lng}`)
+
+                const linkGoogle = `https://www.google.com/maps?q=${resultado.lat},${resultado.lng}`
+                console.log(linkGoogle)
+
+                local.cidade = resultado.city,
+                local.estado = resultado.state,
+                local.linkGoogleMaps = linkGoogle
+            }
+
+            local.nomeLocal = dados.nome,
+            local.descricao = dados.descricao,
+            local.tipoAtividade = dados.atividade,
+        
+            local.usuarioId = userId
+
+            await local.save()
+
+            response.json(local)
 
         } catch(error) {
-
+            console.log(error)
+            response.status(500).json({mensagem: 'Erro ao atualizar local!'})
         }
     }
 }
